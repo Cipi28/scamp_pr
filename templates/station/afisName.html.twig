@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <td>Station Name</td>
+        <td>Longitude</td>
+        <td>Latitude</td>
+    </tr>
+    {% for station in stations %}
+        <tr>
+            <td>{{ station.getName() }}</td>
+            <td>{{ station.getLongitude() }}</td>
+            <td>{{ station.getLatitude() }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
