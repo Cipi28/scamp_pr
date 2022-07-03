@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Station{% endblock %}
+
+{% block body %}
+    <h1><center>New Station</center></h1>
+
+    {{ form_start(StationForm) }}
+    {{ form_row(StationForm.name) }}
+    {{ form_row(StationForm.location) }}
+    {{ form_row(StationForm.latitude) }}
+    {{ form_row(StationForm.longitude) }}
+
+    <button type="submit" class="btn">Add</button>
+    {{ form_end(StationForm) }}
+{% endblock %}

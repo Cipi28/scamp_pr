@@ -5,3 +5,11 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+station_view:
+    path: /station/{id}
+    defaults: { _controller: StationController:Default:view }
+
+delete_view:
+    path: /remove-station/{id}
+    defaults: { _controller: StationController:Default:view }

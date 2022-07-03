@@ -24,6 +24,9 @@ class Station
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $location;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Station
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

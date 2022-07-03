@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+<H1><center>Stations Details</center></H1><br>
+<!--<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
+    {{ app.user ? 'Logout' : 'Login' }}
+</a> -->
+<td><a href="/read-station">Back</a></td>
+<br><br>
+<div style="width: 100%; overflow: hidden;">
+    <div style="width: 600px; float: left;">
+        <p>Name: {{ station.name }}</p>
+        <p>Location:  {{ station.getLocation() }}</p>
+        <p><b>Coordinates:</b></p>
+        <p>Latitude: {{ station.getLatitude()  }}</p>
+        <p>Longitude: {{ station.getLongitude() }}</p>
+    </div>
+    <div style="margin-left: 620px;">
+        <h2>Update the station:</h2>
+        {{ form_start(StationForm) }}
+        {{ form_row(StationForm.name) }}
+        {{ form_row(StationForm.location) }}
+        {{ form_row(StationForm.latitude) }}
+        {{ form_row(StationForm.longitude) }}
+
+        <button type="submit" class="btn">Update</button>
+        {{ form_end(StationForm) }}
+    </div>
+</div>
+</body>
+</html>

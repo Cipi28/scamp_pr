@@ -8,6 +8,7 @@
     </style>
 </head>
 <body>
+<H1><center>Stations Manager</center></H1><br>
 <a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
 {{ app.user ? 'Logout' : 'Login' }}
 </a>
@@ -17,14 +18,20 @@
         <td>Station Name</td>
         <td>Longitude</td>
         <td>Latitude</td>
+        <td>Details of the Station</td>
+        <td>Delete Station</td>
     </tr>
     {% for station in stations %}
         <tr>
             <td>{{ station.getName() }}</td>
             <td>{{ station.getLongitude() }}</td>
             <td>{{ station.getLatitude() }}</td>
+            <td><a href="{{ path('station_view', {'id':station.getId()} )}}"><center>Details</center></a></td>
+            <td><a href="{{ path('delete_view', {'id':station.getId()} )}}"><center>Delete</center></a></td>
         </tr>
     {% endfor %}
 </table>
+<br>
+<a href="/new-station">Add Station</a>
 </body>
 </html>

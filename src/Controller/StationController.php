@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Form\RegistrationFormType;
+use App\Form\StationForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Station;
@@ -12,25 +14,70 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class StationController extends AbstractController
 {
-    #[Route('/station', name: 'create_station')]
-    public function create(ManagerRegistry $doctrine): Response
+    #[Route('/station/{id}', name: 'station_details_{id}')]
+    public function stationDetails(Request $request, EntityManagerInterface $entityManager, $id): Response
+    {
+        //dd($id);
+        $flag = false;
+
+        $station = $entityManager->getRepository(Station::class)->find($id);
+        $form = $this->createForm(StationForm::class, $station);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $flag = true;
+            // encode the plain password
+            $station->setName($form->get('name')->getData());
+            $station->setLocation($form->get('location')->getData());
+            $station->setLongitude($form->get('longitude')->getData());
+            $station->setLatitude($form->get('latitude')->getData());
+
+            $entityManager->persist($station);
+            $entityManager->flush();
+            // do anything else you need here, like send an email
+
+            //return $this->redirectToRoute('/station/'.$id);
+            //return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        }
+        elseif($flag){
+            throw $this->createNotFoundException(
+                'No product found for ' .$id
+            );
+        }
+
+        return $this->render('station/StationDetails.html.twig', [
+            'station' => $station,
+            'StationForm' => $form->createView(),
+        ]);
+    }
+
+
+    #[Route('/new-station', name: 'create_station')]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $station = new Station();
-        $entityManager = $doctrine->getManager();
+        $form = $this->createForm(StationForm::class, $station);
+        $form->handleRequest($request);
 
-        $station->setName('StationNR'.rand());
-        $station->setLatitude(rand());
-        $station->setLongitude(rand());
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $station->setName($form->get('name')->getData());
+            $station->setLocation($form->get('location')->getData());
+            $station->setLongitude($form->get('longitude')->getData());
+            $station->setLatitude($form->get('latitude')->getData());
 
-        $entityManager->persist($station);
+            $entityManager->persist($station);
+            $entityManager->flush();
+            // do anything else you need here, like send an email
 
-        $entityManager->flush();
+            return $this->redirectToRoute('app_read_station');
+        }
 
-        return new Response('Saved new product with name '.$station->getName());
+        //return new Response('Saved new product with name '.$station->getName());
 
-        //return $this->render('station/afisName.html.twig', [
-        //    'station_name' => $station->getName(),
-        //]);
+        return $this->render('station/newStation.html.twig', [
+            'StationForm' => $form->createView(),
+        ]);
     }
 
     #[Route('/read-station', name: 'app_read_station')]
@@ -43,7 +90,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    #[Route('/update-station', name: 'app_update_station')]
+    /* #[Route('/update-station', name: 'app_update_station')]
     public function update(ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
@@ -58,21 +105,22 @@ class StationController extends AbstractController
         $product->setName('Station(Updated)');
         $entityManager->flush();
 
+
         //return $this->redirectToRoute('product_show', [
         //    'id' => $product->getId()
         //]);
         return new Response('Station Updated');
-    }
+    } */
 
-    #[Route('/remove-station', name: 'app_remove_station')]
-    public function remove(ManagerRegistry $doctrine): Response
+    #[Route('/remove-station/{id}', name: 'app_remove_station_{id}')]
+    public function remove(ManagerRegistry $doctrine, $id): Response
     {
         $entityManager = $doctrine->getManager();
-        $product = $entityManager->getRepository(Station::class)->find(8);
+        $product = $entityManager->getRepository(Station::class)->find($id);
 
         if (!$product) {
             throw $this->createNotFoundException(
-                'No product found for id 8'
+                'No product found for id '.$id
             );
         }
 
@@ -82,6 +130,7 @@ class StationController extends AbstractController
         //return $this->redirectToRoute('product_show', [
         //    'id' => $product->getId()
         //]);
-        return new Response('Station Deleted');
+        //return new Response('Station Deleted');
+        return $this->redirectToRoute('app_read_station');
     }
 }
