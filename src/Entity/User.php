@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
+
+    #[ORM\ManyToMany(targetEntity: Car::class, mappedBy: 'user_id')]
+    private $cars;
+
+    public function __construct()
+    {
+        $this->cars = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -99,5 +109,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // TODO: Implement getUserIdentifier() method.
         return (string) $this->username;
+    }
+
+    /**
+     * @return Collection<int, Car>
+     */
+    public function getCars(): Collection
+    {
+        return $this->cars;
+    }
+
+    public function addCar(Car $car): self
+    {
+        if (!$this->cars->contains($car)) {
+            $this->cars[] = $car;
+            $car->addUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCar(Car $car): self
+    {
+        if ($this->cars->removeElement($car)) {
+            $car->removeUserId($this);
+        }
+
+        return $this;
     }
 }
