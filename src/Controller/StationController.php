@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Plug;
 use App\Form\RegistrationFormType;
 use App\Form\StationForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,11 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Station;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\PlugRepository;
 
 class StationController extends AbstractController
 {
-    #[Route('/station/{id}', name: 'station_details_{id}')]
-    public function stationDetails(Request $request, EntityManagerInterface $entityManager, $id): Response
+    #[Route('/station/{id}', name: 'station_details')]
+    public function stationDetails($id, Request $request, EntityManagerInterface $entityManager): Response
     {
         //dd($id);
         $flag = false;
@@ -23,6 +25,9 @@ class StationController extends AbstractController
         $station = $entityManager->getRepository(Station::class)->find($id);
         $form = $this->createForm(StationForm::class, $station);
         $form->handleRequest($request);
+
+        $plugs = $entityManager->getRepository(Plug::class)->findByStationId($id);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $flag = true;
@@ -45,9 +50,11 @@ class StationController extends AbstractController
             );
         }
 
+        //dd($plugs);
         return $this->render('station/StationDetails.html.twig', [
             'station' => $station,
             'StationForm' => $form->createView(),
+            'plugs' => $plugs,
         ]);
     }
 
@@ -80,7 +87,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    #[Route('/read-station', name: 'app_read_station')]
+    #[Route(['/' ,'/read-station'], name: 'app_read_station')]
     public function read(EntityManagerInterface $entityManager) {
 
         $stations = $entityManager->getRepository(Station::class)->findAll() ;
@@ -117,6 +124,13 @@ class StationController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
         $product = $entityManager->getRepository(Station::class)->find($id);
+
+        $productPlug = $entityManager->getRepository(Plug::class)->findByStationId($id);
+        foreach ($productPlug as $plug){
+            $entityManager->remove($plug);
+        }
+        $entityManager->flush();
+
 
         if (!$product) {
             throw $this->createNotFoundException(

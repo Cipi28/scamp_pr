@@ -34,5 +34,25 @@
         {{ form_end(StationForm) }}
     </div>
 </div>
+<br><br>
+<h2><center>Plugs:</center></h2>
+<table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+    <tr>
+        <td>Type</td>
+        <td>Status</td>
+        <td>Details of the Plug</td>
+        <td>Delete Plug</td>
+    </tr>
+    {% for plug in plugs %}
+        <tr>
+            <td>{{ plug.getType() }}</td>
+            <td>{% if plug.getStatus() == 1 %}Available{% else %}Unavailable{% endif %}</td>
+            <td><a href="{{ path('plugDetails_view', {'id':plug.getId()} )}}"><center>Details</center></a></td>
+            <td><a href="{{ path('deletePlug_view', {'id':plug.getId()} )}}"><center>Delete</center></a></td>
+        </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{{ path('plug_view', {'station_id':station.getId()} )}}"><center>Add Plug</center></a>
 </body>
 </html>

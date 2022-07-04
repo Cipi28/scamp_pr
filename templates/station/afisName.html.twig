@@ -16,16 +16,14 @@
 <table>
     <tr>
         <td>Station Name</td>
-        <td>Longitude</td>
-        <td>Latitude</td>
+        <td>Location</td>
         <td>Details of the Station</td>
         <td>Delete Station</td>
     </tr>
     {% for station in stations %}
         <tr>
             <td>{{ station.getName() }}</td>
-            <td>{{ station.getLongitude() }}</td>
-            <td>{{ station.getLatitude() }}</td>
+            <td>{{ station.getLocation() }}</td>
             <td><a href="{{ path('station_view', {'id':station.getId()} )}}"><center>Details</center></a></td>
             <td><a href="{{ path('delete_view', {'id':station.getId()} )}}"><center>Delete</center></a></td>
         </tr>

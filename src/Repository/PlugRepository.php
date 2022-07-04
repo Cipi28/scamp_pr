@@ -63,4 +63,14 @@ class PlugRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByStationId($station_id): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.station_id = :station_id')
+            ->setParameter('station_id', $station_id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

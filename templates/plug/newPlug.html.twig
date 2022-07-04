@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Plug{% endblock %}
+
+{% block body %}
+    <h1><center>New Plug</center></h1>
+
+    {{ form_start(PlugForm) }}
+    {{ form_row(PlugForm.type) }}
+    {{ form_row(PlugForm.status) }}
+
+    <button type="submit" class="btn">Add</button>
+    {{ form_end(PlugForm) }}
+{% endblock %}

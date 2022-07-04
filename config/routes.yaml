@@ -13,3 +13,15 @@ station_view:
 delete_view:
     path: /remove-station/{id}
     defaults: { _controller: StationController:Default:view }
+
+plug_view:
+    path: /new-plug/{station_id}
+    defaults: { _controller: PlugController:Default:view }
+
+plugDetails_view:
+    path: /plug/{id}
+    defaults: { _controller: PlugController:Default:view }
+
+deletePlug_view:
+    path: /remove-plug/{id}
+    defaults: { _controller: PlugController:Default:view }

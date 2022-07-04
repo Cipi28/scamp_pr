@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+<H1><center>Plug Details</center></H1><br>
+<!--<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
+    {{ app.user ? 'Logout' : 'Login' }}
+</a> -->
+<td><a href="{{ path('station_view', {'id':plug.getStationId().getId()} )}}">Back</a></td>
+<br><br>
+<div style="width: 100%; overflow: hidden;">
+    <div style="width: 600px; float: left;">
+        <p>Plug Type: {{ plug.getType() }}</p>
+        <p>Status: {% if plug.getStatus() == 1 %}Available{% else %}Unavailable{% endif %}</p>
+        <p>Station: {{ plug.getStationId().getName() }}</p>
+    </div>
+    <div style="margin-left: 620px;">
+        <h2>Update the station:</h2>
+        {{ form_start(PlugForm) }}
+        {{ form_row(PlugForm.type) }}
+        {{ form_row(PlugForm.status) }}
+
+        <button type="submit" class="btn">Update</button>
+        {{ form_end(PlugForm) }}
+    </div>
+</div>
+</body>
+</html>
