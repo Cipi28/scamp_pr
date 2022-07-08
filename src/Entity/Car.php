@@ -24,9 +24,17 @@ class Car
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'cars')]
     private $user_id;
 
+//    #[ORM\OneToMany(mappedBy: 'car', targetEntity: CarUser::class, orphanRemoval: true)]
+//    private $user;
+
+//    #[ORM\OneToMany(mappedBy: 'car', targetEntity: UserCar::class, orphanRemoval: true)]
+//    private $users;
+
     public function __construct()
     {
         $this->user_id = new ArrayCollection();
+//        $this->user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
 //    #[ORM\OneToMany(mappedBy: 'car_id', targetEntity: Booking::class)]
@@ -119,4 +127,42 @@ public function removeUserId(User $userId): self
 
     return $this;
 }
+
+///**
+// * @return Collection<int, CarUser>
+// */
+//public function getUser(): Collection
+//{
+//    return $this->user;
+//}
+//
+//public function addUser(CarUser $user): self
+//{
+//    if (!$this->user->contains($user)) {
+//        $this->user[] = $user;
+//        $user->setCar($this);
+//    }
+//
+//    return $this;
+//}
+//
+//public function removeUser(CarUser $user): self
+//{
+//    if ($this->user->removeElement($user)) {
+//        // set the owning side to null (unless already changed)
+//        if ($user->getCar() === $this) {
+//            $user->setCar(null);
+//        }
+//    }
+//
+//    return $this;
+//}
+
+///**
+// * @return Collection<int, UserCar>
+// */
+//public function getUsers(): Collection
+//{
+//    return $this->users;
+//}
 }

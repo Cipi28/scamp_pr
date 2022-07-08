@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+//#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -36,9 +36,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Car::class, mappedBy: 'user_id')]
     private $cars;
 
+//    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CarUser::class, orphanRemoval: true)]
+//    private $car;
+
     public function __construct()
     {
         $this->cars = new ArrayCollection();
+//        $this->car = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,4 +141,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+//
+//    /**
+//     * @return Collection<int, CarUser>
+//     */
+//    public function getCar(): Collection
+//    {
+//        return $this->car;
+//    }
 }

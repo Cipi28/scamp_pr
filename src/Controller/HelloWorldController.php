@@ -10,6 +10,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class HelloWorldController extends AbstractController
 {
 
+    private $twig;
+
     #[Route("/helloWorld")]
 
     public function text(): Response
@@ -20,8 +22,9 @@ class HelloWorldController extends AbstractController
         //    '<html><body>Hello World!</body></html>'
         //);
 
-        return $this->render('HelloWorld.html.twig',[
+        return $this->render('base.html.twig',[
             'user_first_name' => $userFirstName,
+            'template' => 'HelloWorld.html.twig'
         ]);
     }
 }

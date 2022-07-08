@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello User!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1><center>HomePage</center></h1>
+</div>
+<h2>Your Cars:</h2>
+    <table>
+        <tr>
+            <td>Plate</td>
+            <td>Plug Type</td>
+            <td>Details of the Car</td>
+            <td>Delete Car</td>
+            <td>Make a booking</td>
+        </tr>
+        {% for car in cars %}
+            <tr>
+                <td>{{ car.getPlate() }}</td>
+                <td>{{ car.getPlugType() }}</td>
+                <td><a href="{{ path('carDetails_view', {'id':car.getId()} )}}"><center>Details</center></a></td>
+                <td><a href="{{ path('deleteCar_view', {'id':car.getId()} )}}"><center>Delete</center></a></td>
+                <td><a href="{{ path('booking_view', {'car_id':car.getId()} )}}"><center>Book</center></a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br><a href="/new-car">Add new Car</a>
+{% endblock %}

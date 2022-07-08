@@ -25,3 +25,15 @@ plugDetails_view:
 deletePlug_view:
     path: /remove-plug/{id}
     defaults: { _controller: PlugController:Default:view }
+
+carDetails_view:
+    path: /car/{id}
+    defaults: { _controller: CarController:Default:view }
+
+deleteCar_view:
+    path: /remove-car/{id}
+    defaults: { _controller: CarController:Default:view }
+
+booking_view:
+    path: /booking/{car_id}
+    defaults: { _controller: BookingController:Default:view }

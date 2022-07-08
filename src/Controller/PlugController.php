@@ -46,10 +46,16 @@ class PlugController extends AbstractController
         }
 
         //dd($plugs);
-        return $this->render('plug/PlugDetails.html.twig', [
+//        return $this->render('plug/PlugDetails.html.twig', [
+//            'plug' => $plug,
+//            'PlugForm' => $form->createView(),
+////            'plugs' => $plugs,
+//        ]);
+
+        return $this->render('base.html.twig',[
             'plug' => $plug,
             'PlugForm' => $form->createView(),
-//            'plugs' => $plugs,
+            'template' => 'plug/PlugDetails.html.twig'
         ]);
     }
 
@@ -89,8 +95,13 @@ class PlugController extends AbstractController
         //return new Response('Saved new product with name '.$station->getName());
 
         //dd($plug);
-        return $this->render('plug/newPlug.html.twig', [
+//        return $this->render('plug/newPlug.html.twig', [
+//            'PlugForm' => $form->createView(),
+//        ]);
+
+        return $this->render('base.html.twig',[
             'PlugForm' => $form->createView(),
+            'template' => 'plug/newPlug.html.twig'
         ]);
     }
 

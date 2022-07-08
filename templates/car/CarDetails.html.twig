@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+<H1><center>Plug Details</center></H1><br>
+<!--<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
+    {{ app.user ? 'Logout' : 'Login' }}
+</a> -->
+<td><a href="/user">Back</a></td>
+<br><br>
+<div style="width: 100%; overflow: hidden;">
+    <div style="width: 600px; float: left;">
+        <p>Plate: {{ car.getPlate() }}</p>
+        <p>PlugType: {{ car.getPlugType() }}</p>
+    </div>
+    <div style="margin-left: 620px;">
+        <h2>Update the car:</h2>
+        {{ form_start(CarForm) }}
+        {{ form_row(CarForm.plate) }}
+        {{ form_row(CarForm.plugType) }}
+
+        <button type="submit" class="btn">Update</button>
+        {{ form_end(CarForm) }}
+    </div>
+</div>
+</body>
+</html>

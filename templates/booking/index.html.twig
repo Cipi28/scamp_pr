@@ -11,8 +11,12 @@
 <div class="example-wrapper">
     <h1><center>Make a Booking</center></h1>
 </div>
-<p>Set start time: </p>
-<p>Set duration: </p>
-<p>Choose a car: </p>
-<p>Choose a plug: </p>
+<div><center>
+        <p>Choosen car: {{ car.getPlate() }}</p>
+    <p>Set start time: <input type="datetime-local" id="meeting-time"
+                              name="meeting-time" value="2018-06-12T19:30"></p>
+    <p>Set duration: <input type="time" id="appt" name="appt"s></p>
+    <a href="">See available plugs </a>
+    </center></div>
+
 {% endblock %}

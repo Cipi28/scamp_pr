@@ -51,10 +51,17 @@ class StationController extends AbstractController
         }
 
         //dd($plugs);
-        return $this->render('station/StationDetails.html.twig', [
+//        return $this->render('station/StationDetails.html.twig', [
+//            'station' => $station,
+//            'StationForm' => $form->createView(),
+//            'plugs' => $plugs,
+//        ]);
+
+        return $this->render('base.html.twig',[
             'station' => $station,
             'StationForm' => $form->createView(),
             'plugs' => $plugs,
+            'template' => 'station/StationDetails.html.twig'
         ]);
     }
 
@@ -82,8 +89,13 @@ class StationController extends AbstractController
 
         //return new Response('Saved new product with name '.$station->getName());
 
-        return $this->render('station/newStation.html.twig', [
+//        return $this->render('station/newStation.html.twig', [
+//            'StationForm' => $form->createView(),
+//        ]);
+
+        return $this->render('base.html.twig',[
             'StationForm' => $form->createView(),
+            'template' => 'station/newStation.html.twig'
         ]);
     }
 
@@ -92,8 +104,13 @@ class StationController extends AbstractController
 
         $stations = $entityManager->getRepository(Station::class)->findAll() ;
 
-        return $this->render('station/afisName.html.twig', [
+//        return $this->render('station/afisName.html.twig', [
+//            'stations' => $stations,
+//        ]);
+
+        return $this->render('base.html.twig',[
             'stations' => $stations,
+            'template' => 'station/afisName.html.twig'
         ]);
     }
 
