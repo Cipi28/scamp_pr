@@ -2,13 +2,17 @@
 
 {% block title %}New Car{% endblock %}
 
+{% form_theme CarForm 'bootstrap_5_horizontal_layout.html.twig' %}
+
 {% block body %}
-    <h1><center>New Car</center></h1>
+    <br><h1 style="font-family: Optima, sans-serif"><center>New Car</center></h1><br>
 
-    {{ form_start(CarForm) }}
-    {{ form_row(CarForm.plate) }}
-    {{ form_row(CarForm.plugType) }}
+    <div style="width: 90%;">
+        <center>{{ form_start(CarForm) }}
+        {{ form_row(CarForm.plate) }}
+        {{ form_row(CarForm.plugType) }}</center>
+    </div>
 
-    <button type="submit" class="btn">Add</button>
+    <center><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Add</button></center>
     {{ form_end(CarForm) }}
 {% endblock %}
