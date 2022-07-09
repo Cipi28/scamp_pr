@@ -2,13 +2,27 @@
 
 {% block title %}New Plug{% endblock %}
 
+{% form_theme PlugForm 'tailwind_2_layout.html.twig' %}
+{% block head %}
+    <style>
+        .center {
+            margin: auto;
+            width: 60%;
+            border: 3px solid #73AD21;
+            padding: 10px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1><center>New Plug</center></h1>
+    <div class="center">
+    <br><h1 style="font-family: Optima, sans-serif"><center>New Plug</center></h1><br>
 
     {{ form_start(PlugForm) }}
-    {{ form_row(PlugForm.type) }}
-    {{ form_row(PlugForm.status) }}
+    <center>{{ form_row(PlugForm.type) }}
+    <br>{{ form_row(PlugForm.status) }}</center><br>
 
-    <button type="submit" class="btn">Add</button>
+    <center><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Add</button></center>
     {{ form_end(PlugForm) }}
+    </div>
 {% endblock %}

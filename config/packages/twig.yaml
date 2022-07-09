@@ -4,3 +4,7 @@ twig:
 when@test:
     twig:
         strict_variables: true
+        form_themes: ['bootstrap_5_layout.html.twig',
+                      'bootstrap_5_horizontal_layout.html.twig',
+                      'tailwind_2_layout.html.twig',
+                      'form_div_layout.html.twig']

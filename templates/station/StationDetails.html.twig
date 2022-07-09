@@ -2,25 +2,30 @@
 <html>
 <head>
     <style>
-        table, th, td {
-            border:1px solid black;
+        /*table, th, td {*/
+        /*    border:1px solid black;*/
+        /*}*/
+        td, th, h1, h2, p{
+            font-family: Optima, sans-serif
         }
     </style>
+    {% form_theme StationForm 'bootstrap_5_horizontal_layout.html.twig' %}
 </head>
 <body>
+<br><td><a class="btn btn-outline-secondary text-center rounded-pill" href="/read-station">Back</a></td>
 <H1><center>Stations Details</center></H1><br>
 <!--<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
     {{ app.user ? 'Logout' : 'Login' }}
 </a> -->
-<td><a href="/read-station">Back</a></td>
+
 <br><br>
-<div style="width: 100%; overflow: hidden;">
+<div style="width: 80%; overflow: hidden;">
     <div style="width: 600px; float: left;">
-        <p>Name: {{ station.name }}</p>
-        <p>Location:  {{ station.getLocation() }}</p>
-        <p><b>Coordinates:</b></p>
-        <p>Latitude: {{ station.getLatitude()  }}</p>
-        <p>Longitude: {{ station.getLongitude() }}</p>
+        <center><p>Name: {{ station.name }}</p><br>
+        <p>Location:  {{ station.getLocation() }}</p><br>
+        <p><b>Coordinates:</b></p><br>
+        <p>Latitude: {{ station.getLatitude()  }}</p><br>
+        <p>Longitude: {{ station.getLongitude() }}</p></center>
     </div>
     <div style="margin-left: 620px;">
         <h2>Update the station:</h2>
@@ -30,29 +35,31 @@
         {{ form_row(StationForm.latitude) }}
         {{ form_row(StationForm.longitude) }}
 
-        <button type="submit" class="btn">Update</button>
+        <button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Update</button>
         {{ form_end(StationForm) }}
     </div>
 </div>
 <br><br>
 <h2><center>Plugs:</center></h2>
-<table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+<div class="table-responsive">
+<table class="table table-striped table-borderless">
     <tr>
-        <td>Type</td>
-        <td>Status</td>
-        <td>Details of the Plug</td>
-        <td>Delete Plug</td>
+        <th scope="col">Type</th>
+        <th scope="col">Status</th>
+        <th scope="col">Details of the Plug</th>
+        <th scope="col">Delete Plug</th>
     </tr>
     {% for plug in plugs %}
         <tr>
-            <td>{{ plug.getType() }}</td>
+            <td scope="row">{{ plug.getType() }}</td>
             <td>{% if plug.getStatus() == 1 %}Available{% else %}Unavailable{% endif %}</td>
-            <td><a href="{{ path('plugDetails_view', {'id':plug.getId()} )}}"><center>Details</center></a></td>
-            <td><a href="{{ path('deletePlug_view', {'id':plug.getId()} )}}"><center>Delete</center></a></td>
+            <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('plugDetails_view', {'id':plug.getId()} )}}">Details</a></td>
+            <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('deletePlug_view', {'id':plug.getId()} )}}">Delete</a></td>
         </tr>
     {% endfor %}
 </table>
+</div>
 <br>
-<a href="{{ path('plug_view', {'station_id':station.getId()} )}}"><center>Add Plug</center></a>
-</body>
+<center><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="{{ path('plug_view', {'station_id':station.getId()} )}}">Add Plug</a></center>
+<br><br></body>
 </html>

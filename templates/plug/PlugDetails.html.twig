@@ -2,31 +2,33 @@
 <html>
 <head>
     <style>
-        table, th, td {
-            border:1px solid black;
+        td, th, h1, h2, p{
+            font-family: Optima, sans-serif
         }
     </style>
+    {% form_theme PlugForm 'bootstrap_5_layout.html.twig' %}
 </head>
 <body>
+<br><td><a class="btn btn-outline-secondary text-center rounded-pill" href="{{ path('station_view', {'id':plug.getStationId().getId()} )}}">Back</a></td>
 <H1><center>Plug Details</center></H1><br>
 <!--<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
     {{ app.user ? 'Logout' : 'Login' }}
 </a> -->
-<td><a href="{{ path('station_view', {'id':plug.getStationId().getId()} )}}">Back</a></td>
+
 <br><br>
-<div style="width: 100%; overflow: hidden;">
+<div style="width: 80%; overflow: hidden;">
     <div style="width: 600px; float: left;">
-        <p>Plug Type: {{ plug.getType() }}</p>
-        <p>Status: {% if plug.getStatus() == 1 %}Available{% else %}Unavailable{% endif %}</p>
-        <p>Station: {{ plug.getStationId().getName() }}</p>
+        <center><p>Plug Type: {{ plug.getType() }}</p><br>
+        <p>Status: {% if plug.getStatus() == 1 %}Available{% else %}Unavailable{% endif %}</p><br>
+            <p>Station: {{ plug.getStationId().getName() }}</p></center>
     </div>
     <div style="margin-left: 620px;">
-        <h2>Update the station:</h2>
+        <h2>Update the station:</h2><br>
         {{ form_start(PlugForm) }}
         {{ form_row(PlugForm.type) }}
         {{ form_row(PlugForm.status) }}
 
-        <button type="submit" class="btn">Update</button>
+        <br><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Update</button>
         {{ form_end(PlugForm) }}
     </div>
 </div>

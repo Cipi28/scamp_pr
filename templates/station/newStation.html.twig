@@ -2,15 +2,17 @@
 
 {% block title %}New Station{% endblock %}
 
-{% block body %}
-    <h1><center>New Station</center></h1>
+{% form_theme StationForm 'bootstrap_5_horizontal_layout.html.twig' %}
 
+{% block body %}
+    <br><h1 style="font-family: Optima, sans-serif"><center>New Station</center></h1><br>
+<div style="width: 90%;">
     {{ form_start(StationForm) }}
-    {{ form_row(StationForm.name) }}
+    <center>{{ form_row(StationForm.name) }}
     {{ form_row(StationForm.location) }}
     {{ form_row(StationForm.latitude) }}
-    {{ form_row(StationForm.longitude) }}
+    {{ form_row(StationForm.longitude) }}</center></div>
 
-    <button type="submit" class="btn">Add</button>
+    <br><center><button type="submit" class="btn btn-outline-secondary text-center rounded-pill" >Add</button></center>
     {{ form_end(StationForm) }}
 {% endblock %}
