@@ -17,19 +17,19 @@
     <h1><center>Make a Booking</center></h1>
 </div>
 <div><center>
-        <br><br><p>Choosen car: {{ car.getPlate() }}</p>
+        <br><br><p><b>Choosen car: {{ car.getPlate() }}</b></p>
 {#    <p>Set start time: <input type="datetime-local" id="meeting-time"#}
 {#                              name="meeting-time" value="2018-06-12T19:30"></p>#}
 {#        {{ "now"|date("d/m/Y") }}#}
 {#    <p>Set duration: <input type="time" id="appt" name="appt"s></p>#}
-        <div style="width: 20%;">
+        <div style="width: 30%;">
             {{ form_start(BookingForm) }}
             {{ form_row(BookingForm.startTime) }}<br>
             {{ form_row(BookingForm.duration) }}<br>
         </div>
 
 
-{#    <center><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Add</button></center>#}
+    <center><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Add</button></center>
     {{ form_end(BookingForm) }}
 
 

@@ -37,3 +37,7 @@ deleteCar_view:
 booking_view:
     path: /booking/{car_id}
     defaults: { _controller: BookingController:Default:view }
+
+select_plug:
+    path: /add_plug/{booking_id}/{plug}
+    defaults: { _controller: BookingController:Default:view }
