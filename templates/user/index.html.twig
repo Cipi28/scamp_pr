@@ -25,7 +25,7 @@
             <th scope="col">Plug Type</th>
             <th scope="col">Details of the Car</th>
             <th scope="col">Delete Car</th>
-            <th scope="col">Make a booking</th>
+            <th scope="col">Handle bookings</th>
         </tr>
         {% for car in cars %}
             <tr>
@@ -33,8 +33,12 @@
                 <td>{{ car.getPlugType() }}</td>
                 <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('carDetails_view', {'id':car.getId()} )}}"><center>Details</center></a></td>
                 <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('deleteCar_view', {'id':car.getId()} )}}"><center>Delete</center></a></td>
+                {% if car.getBookingId() == NULL %}
                 <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('booking_view', {'car_id':car.getId()} )}}"><center>Book</center></a></td>
-            </tr>
+                {% else %}
+                    <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('booking_delete', {'car_id':car.getId()} )}}"><center>Delete</center></a></td>
+                {% endif %}
+                    </tr>
         {% endfor %}
     </table></div>
     <center><br><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="/new-car">Add new Car</a></center>

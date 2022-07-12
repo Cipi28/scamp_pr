@@ -39,19 +39,22 @@
             <div class="collapse navbar-collapse" id="toggleMobileMenu">
                 <ul class="navbar-nav text-center nav-fill w-100">
                     <li>
-                        <a class="nav-link" href="#">MyCars</a>
+                        <a class="nav-link" href="\user">MyCars</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Bookings</a>
+                        <a class="nav-link" href="/read-bookings">Bookings</a>
                     </li>
                     <li>
                         <a class="nav-link ms-auto" href="\read-station">Stations</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav  ms-auto text-center">
-                    <li>
-                        <a class="nav-link" href="#">UserName</a>
-                    </li>
+
+                    {% if app.user %}
+                        <li>
+                            <a class="nav-link" href="">{{ app.user.userIdentifier }}</a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a class="nav-link" href="#">LogOut</a>
                     </li>

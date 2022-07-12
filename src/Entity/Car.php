@@ -24,6 +24,9 @@ class Car
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'cars')]
     private $user_id;
 
+    #[ORM\OneToOne(inversedBy: 'car', targetEntity: Booking::class, cascade: ['persist', 'remove'])]
+    private $booking_id;
+
 //    #[ORM\OneToMany(mappedBy: 'car', targetEntity: CarUser::class, orphanRemoval: true)]
 //    private $user;
 
@@ -165,4 +168,16 @@ public function removeUserId(User $userId): self
 //{
 //    return $this->users;
 //}
+
+public function getBookingId(): ?Booking
+{
+    return $this->booking_id;
+}
+
+public function setBookingId(?Booking $booking_id): self
+{
+    $this->booking_id = $booking_id;
+
+    return $this;
+}
 }

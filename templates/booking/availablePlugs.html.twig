@@ -31,7 +31,7 @@
             <tr>
                 <td scope="row">{{ plug.getStationId().getName() }}</td>
                 <td>{{ plug.getType() }}</td>
-                <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('select_plug', [{'plug':plug}, {'booking_id':booking_id}]  )}}">Select</a></td>
+                <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('select_plug', {'plug_id':plug.getId(), 'booking_id':booking_id}  )}}">Select</a></td>
             </tr>
         {% endfor %}
     </table>

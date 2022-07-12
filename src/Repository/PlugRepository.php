@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Plug;
+use App\Entity\Booking;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -72,5 +73,15 @@ class PlugRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findByStatus(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.status = :status')
+            ->setParameter('status', true)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

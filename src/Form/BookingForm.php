@@ -19,7 +19,7 @@ class BookingForm extends AbstractType
     {
         $builder
             ->add('startTime', DateTimeType::class)
-            ->add('duration', \Symfony\Component\Form\Extension\Core\Type\TimeType::class)
+            ->add('duration', \Symfony\Component\Form\Extension\Core\Type\DateIntervalType::class)
         ;
     }
 

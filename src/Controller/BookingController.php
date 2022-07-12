@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Entity\Car;
 use App\Entity\Plug;
+use App\Entity\Station;
 use App\Form\BookingForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,11 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PlugRepository;
 
 class BookingController extends AbstractController
 {
     #[Route('/booking/{car_id}', name: 'app_booking')]
-    public function read($car_id, EntityManagerInterface $entityManager, Request $request): Response
+    public function createBooking($car_id, EntityManagerInterface $entityManager, Request $request): Response
     {
 
         $car = $entityManager->getRepository(Car::class)->find($car_id);
@@ -32,11 +34,12 @@ class BookingController extends AbstractController
             $booking->setStartTime($form->get('startTime')->getData());
             $booking->setDuration($form->get('duration')->getData());
             $booking->setCarId($car);
+            $car->setBookingId($booking);
 
             $entityManager->persist($booking);
             $entityManager->flush();
             // do anything else you need here, like send an email
-
+            //dd($booking->getId());
             return $this->redirectToRoute('available_plugs', ['booking_id' => $booking->getId()]);
         }
 
@@ -47,27 +50,67 @@ class BookingController extends AbstractController
         ]);
     }
 
-    #[Route(['/available_plugs/{booking_id}'], name: 'available_plugs')]
-    public function availablePlugs(EntityManagerInterface $entityManager, $booking_id) {
+    #[Route(['/read-bookings'], name: 'app_read_bookings')]
+    public function read(EntityManagerInterface $entityManager) {
 
-        $availablePLugs = $entityManager->getRepository(Plug::class)->findAll() ;
+        $bookings = $entityManager->getRepository(Booking::class)->findAll() ;
 
 //        return $this->render('station/afisName.html.twig', [
 //            'stations' => $stations,
 //        ]);
 
         return $this->render('base.html.twig',[
-            'availablePlugs' => $availablePLugs,
+            'bookings' => $bookings,
+            'template' => 'booking/bookingList.html.twig'
+        ]);
+    }
+
+    #[Route(['/available_plugs/{booking_id}'], name: 'available_plugs')]
+    public function availablePlugs(EntityManagerInterface $entityManager, int $booking_id) {
+        //dd($booking_id);
+        $availablePlugs = $entityManager->getRepository(Plug::class)->findByStatus() ;
+        $bookings = $entityManager->getRepository(Booking::class)->findAll() ;
+        $specificBooking = $entityManager->getRepository(Booking::class)->find($booking_id) ;
+        $specificStartTime = $specificBooking->getStartTime();
+        $specificEndTime = $specificBooking->getStartTime();
+        $specificEndTime->add($specificBooking->getDuration());
+//        dd($specificEndTime);
+        foreach ($bookings as $booking){
+            $StartTime= $booking->getStartTime();
+            $EndTime = $booking->getStartTime();
+            $EndTime->add($booking->getDuration());
+            if($booking->getId() != $specificBooking->getId()) {
+                if (($EndTime >= $specificStartTime && $EndTime >= $specificEndTime) || ($StartTime >= $specificStartTime && $StartTime >= $specificEndTime)) {
+//                    dd($booking);
+                    if ($booking->getPlugId() != NULL) {
+                        for ($i = 0; $i < sizeof($availablePlugs); $i++) {
+                            if ( $availablePlugs[$i]->getId() == $booking->getPlugId()->getId()) {
+                                unset($availablePlugs[$i]);
+//                                dd('error');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $entityManager->flush();
+
+//        return $this->render('station/afisName.html.twig', [
+//            'stations' => $stations,
+//        ]);
+
+        return $this->render('base.html.twig',[
+            'availablePlugs' => $availablePlugs,
             'booking_id' => $booking_id,
             'template' => 'booking/availablePlugs.html.twig'
         ]);
     }
 
-    #[Route('/add_plug/{booking_id}/{plug}', name: 'app_add_plug')]
-    public function addPlug(ManagerRegistry $doctrine, $booking_id, Plug $plug): Response
+    #[Route('/add_plug/{booking_id}/{plug_id}', name: 'app_add_plug')]
+    public function addPlug(ManagerRegistry $doctrine, int $booking_id, int $plug_id): Response
     {
         $entityManager = $doctrine->getManager();
-        $booking = $entityManager->getRepository(Plug::class)->find($booking_id);
+        $booking = $entityManager->getRepository(Booking::class)->find($booking_id);
         //dd($booking->getStationId()->getId());
 
         if (!$booking) {
@@ -76,6 +119,7 @@ class BookingController extends AbstractController
 
             );
         }
+        $plug = $entityManager->getRepository(Plug::class)->find($plug_id);
 
         $booking->setPlugId($plug);
 
@@ -86,6 +130,33 @@ class BookingController extends AbstractController
         //    'id' => $booking->getId()
         //]);
         //return new Response('Station Deleted');
-        return $this->redirectToRoute('users');
+        return $this->redirectToRoute('user');
+    }
+
+    #[Route('/remove-booking/{car_id}', name: 'app_remove_booking')]
+    public function remove(ManagerRegistry $doctrine, $car_id): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $car = $entityManager->getRepository(Car::class)->find($car_id);
+        $booking =  $car->getBookingId();
+        //dd($product->getStationId()->getId());
+
+        if (!$car) {
+            throw $this->createNotFoundException(
+                'No car found for id '.$car_id
+            );
+        }
+
+        $car->setBookingId(NULL);
+        $booking->setCar(NULL);
+
+        $entityManager->remove($booking);
+        $entityManager->flush();
+
+        //return $this->redirectToRoute('product_show', [
+        //    'id' => $product->getId()
+        //]);
+        //return new Response('Station Deleted');
+        return $this->redirectToRoute('user');
     }
 }
