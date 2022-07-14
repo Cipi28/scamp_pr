@@ -6,6 +6,7 @@ use App\Entity\Booking;
 use App\Entity\Car;
 use App\Entity\Plug;
 use App\Entity\Station;
+use App\Entity\UserCar;
 use App\Form\BookingForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -58,35 +59,44 @@ class BookingController extends AbstractController
 //        return $this->render('station/afisName.html.twig', [
 //            'stations' => $stations,
 //        ]);
+        $bookingss[] = new Booking();
+        array_splice($bookingss, 0, 1);
+//        $cars = $entityManager->getRepository(Car::class)->findAll();
+        $relations = $entityManager->getRepository(UserCar::class)->findAll();
+
+        foreach ($relations as $relation){
+            if($relation->getUser() == $this->getUser()) {
+                if($relation->getCar()->getBookingId() != NULL) {
+                    array_push($bookingss, $relation->getCar()->getBookingId());
+                }
+            }
+        }
+//        dd($bookingss);
 
         return $this->render('base.html.twig',[
-            'bookings' => $bookings,
+            'bookings' => $bookingss,
             'template' => 'booking/bookingList.html.twig'
         ]);
     }
 
     #[Route(['/available_plugs/{booking_id}'], name: 'available_plugs')]
     public function availablePlugs(EntityManagerInterface $entityManager, int $booking_id) {
-        //dd($booking_id);
         $availablePlugs = $entityManager->getRepository(Plug::class)->findByStatus() ;
         $bookings = $entityManager->getRepository(Booking::class)->findAll() ;
         $specificBooking = $entityManager->getRepository(Booking::class)->find($booking_id) ;
         $specificStartTime = $specificBooking->getStartTime();
         $specificEndTime = $specificBooking->getStartTime();
         $specificEndTime->add($specificBooking->getDuration());
-//        dd($specificEndTime);
         foreach ($bookings as $booking){
             $StartTime= $booking->getStartTime();
             $EndTime = $booking->getStartTime();
             $EndTime->add($booking->getDuration());
             if($booking->getId() != $specificBooking->getId()) {
                 if (($EndTime >= $specificStartTime && $EndTime >= $specificEndTime) || ($StartTime >= $specificStartTime && $StartTime >= $specificEndTime)) {
-//                    dd($booking);
                     if ($booking->getPlugId() != NULL) {
-                        for ($i = 0; $i < sizeof($availablePlugs); $i++) {
+                        for ($i = 0; $i < count($availablePlugs); $i++) {
                             if ( $availablePlugs[$i]->getId() == $booking->getPlugId()->getId()) {
-                                unset($availablePlugs[$i]);
-//                                dd('error');
+                                array_splice($availablePlugs, $i, 1);
                             }
                         }
                     }

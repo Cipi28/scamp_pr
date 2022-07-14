@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Car;
+use App\Entity\UserCar;
 use App\Entity\Plug;
 use App\Entity\Station;
 use App\Form\CarForm;
@@ -29,6 +30,7 @@ class CarController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $car = new Car();
+        $join = new UserCar();
         $form = $this->createForm(CarForm::class, $car);
         $form->handleRequest($request);
 
@@ -36,19 +38,18 @@ class CarController extends AbstractController
             // encode the plain password
             $car->setPlate($form->get('plate')->getData());
             $car->setPlugType($form->get('plugType')->getData());
-
+            $car->addUserId($this->getUser());
+            $join->setCar($car);
+            $join->setUser($this->getUser());
             $entityManager->persist($car);
+            $entityManager->persist($join);
             $entityManager->flush();
+            //dd($car->getUserId());
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('user');
         }
 
-        //return new Response('Saved new product with name '.$station->getName());
-
-//        return $this->render('car/newCar.html.twig', [
-//            'CarForm' => $form->createView(),
-//        ]);
 
         return $this->render('base.html.twig',[
             'CarForm' => $form->createView(),
@@ -103,18 +104,38 @@ class CarController extends AbstractController
     #[Route('/remove-car/{id}', name: 'app_remove_car')]
     public function remove(ManagerRegistry $doctrine, $id): Response
     {
+
         $entityManager = $doctrine->getManager();
-        $product = $entityManager->getRepository(Car::class)->find($id);
+
+        $car = $entityManager->getRepository(Car::class)->find($id);
         //dd($product->getStationId()->getId());
 
-        if (!$product) {
+        if (!$car) {
             throw $this->createNotFoundException(
                 'No product found for id '.$id
             );
         }
 
+        if($car->getBookingId() != NULL) {
 
-        $entityManager->remove($product);
+            $booking = $car->getBookingId();
+            $car->setBookingId(NULL);
+            $booking->setCar(NULL);
+            $entityManager->remove($booking);
+            $entityManager->flush();
+        }
+
+
+        $joins = $entityManager->getRepository(UserCar::class)->findAll();
+        foreach ($joins as $join){
+            if($join->getCar() == $car) {
+                $entityManager->remove($join);
+                $entityManager->flush();
+            }
+        }
+
+
+        $entityManager->remove($car);
         $entityManager->flush();
 
         //return $this->redirectToRoute('product_show', [

@@ -99,7 +99,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    #[Route(['/' ,'/read-station'], name: 'app_read_station')]
+    #[Route('/read-station', name: 'app_read_station')]
     public function read(EntityManagerInterface $entityManager) {
 
         $stations = $entityManager->getRepository(Station::class)->findAll() ;

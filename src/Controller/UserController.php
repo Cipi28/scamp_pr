@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Car;
+use App\Entity\UserCar;
 use App\Entity\Station;
 use App\Form\StationForm;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,47 +23,20 @@ class UserController extends AbstractController
 //        ]);
 //    }
 
-    #[Route('/user', name: 'user')]
+    #[Route(['/' ,'/user'], name: 'user')]
     public function stationDetails(Request $request, EntityManagerInterface $entityManager): Response
     {
-        //dd($id);
-        $flag = false;
+        $cars[] = new Car();
+        array_splice($cars, 0, 1);
+//        $cars = $entityManager->getRepository(Car::class)->findAll();
+        $relations = $entityManager->getRepository(UserCar::class)->findAll();
 
-        //$station = $entityManager->getRepository(Station::class)->find($id);
-        //$form = $this->createForm(StationForm::class, $station);
-        //$form->handleRequest($request);
+        foreach ($relations as $relation){
+            if($relation->getUser() == $this->getUser()) {
+                array_push($cars, $relation->getCar());
+            }
+        }
 
-        $cars = $entityManager->getRepository(Car::class)->findAll();
-
-
-
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $flag = true;
-//            // encode the plain password
-//            $station->setName($form->get('name')->getData());
-//            $station->setLocation($form->get('location')->getData());
-//            $station->setLongitude($form->get('longitude')->getData());
-//            $station->setLatitude($form->get('latitude')->getData());
-//
-//            $entityManager->persist($station);
-//            $entityManager->flush();
-//            // do anything else you need here, like send an email
-//
-//            //return $this->redirectToRoute('/station/'.$id);
-//            //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-//        }
-//        elseif($flag){
-//            throw $this->createNotFoundException(
-//                'No product found for ' .$id
-//            );
-//        }
-
-        //dd($plugs);
-//        return $this->render('user/index.html.twig', [
-////            'station' => $station,
-////            'StationForm' => $form->createView(),
-//            'cars' => $cars,
-//        ]);
 
         return $this->render('base.html.twig',[
             'cars' => $cars,

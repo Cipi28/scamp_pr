@@ -52,11 +52,14 @@
 
                     {% if app.user %}
                         <li>
-                            <a class="nav-link" href="">{{ app.user.userIdentifier }}</a>
+                            <b class="nav-link" >{{ app.user.userIdentifier }}</b>
                         </li>
                     {% endif %}
                     <li>
-                        <a class="nav-link" href="#">LogOut</a>
+{#                        <a class="nav-link" href="#">LogOut</a>#}
+                        <a class="nav-link" href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
+                            {{ app.user ? 'Logout' : 'Login' }}
+                        </a>
                     </li>
                 </ul>
             </div>

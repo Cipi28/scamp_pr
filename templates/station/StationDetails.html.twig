@@ -8,15 +8,24 @@
         td, th, h1, h2, p{
             font-family: Optima, sans-serif
         }
+        .dot {
+            height: 25px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+        }
     </style>
     {% form_theme StationForm 'bootstrap_5_horizontal_layout.html.twig' %}
 </head>
 <body>
 <br><td><a class="btn btn-outline-secondary text-center rounded-pill" href="/read-station">Back</a></td>
-<H1><center>Stations Details</center></H1><br>
-<!--<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
-    {{ app.user ? 'Logout' : 'Login' }}
-</a> -->
+<H1><center >Stations Details</center></H1>
+{% if app.user %}
+<br>
+{% else %}
+    <p><center style="color:red">Login in order to manage the Station</center></p><br>
+{% endif %}
 
 <br><br>
 <div style="width: 80%; overflow: hidden;">
@@ -35,13 +44,17 @@
         {{ form_row(StationForm.latitude) }}
         {{ form_row(StationForm.longitude) }}
 
+        {% if app.user %}
         <button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Update</button>
+        {% else %}
+            <p><center style="color:red">Cannot update Station</center></p><br>
+        {% endif %}
         {{ form_end(StationForm) }}
     </div>
 </div>
 <br><br>
 <h2><center>Plugs:</center></h2>
-<div class="table-responsive">
+<div class="table-responsive" style="width: 85%; margin: auto">
 <table class="table table-striped table-borderless">
     <tr>
         <th scope="col">Type</th>
@@ -52,14 +65,21 @@
     {% for plug in plugs %}
         <tr>
             <td scope="row">{{ plug.getType() }}</td>
-            <td>{% if plug.getStatus() == 1 %}Available{% else %}Unavailable{% endif %}</td>
+            <td>{% if plug.getStatus() == 1 %}<span class="dot" style="background: green"></span>{% else %}<span class="dot" style="background: red"></span>{% endif %}</td>
             <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('plugDetails_view', {'id':plug.getId()} )}}">Details</a></td>
+            {% if app.user %}
             <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('deletePlug_view', {'id':plug.getId()} )}}">Delete</a></td>
+            {% else %}
+                <td><a style="background: lightgray" class="border-0 btn btn-outline-light " >Delete</a></td>
+            {% endif %}
         </tr>
     {% endfor %}
 </table>
 </div>
 <br>
-<center><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="{{ path('plug_view', {'station_id':station.getId()} )}}">Add Plug</a></center>
+{% if app.user %}
+    <center><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="{{ path('plug_view', {'station_id':station.getId()} )}}">Add Plug</a></center>
+
+{% endif %}
 <br><br></body>
 </html>

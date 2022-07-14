@@ -63,4 +63,14 @@ class UserRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findOneByCarId($car): ?Car
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.exampleField = :car')
+            ->setParameter('car', $car)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 }

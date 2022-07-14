@@ -15,12 +15,13 @@
     </style>
 </head>
 <body>
+{% if app.user %}
 <br><br><H1><center>Bookings</center></H1><br>
 {#<a href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">#}
 {#{{ app.user ? 'Logout' : 'Login' }}#}
 {#</a>#}
 <br>
-<div class="table-responsive" >
+<div class="table-responsive" style="width: 85%; margin: auto">
     <table class="table table-striped table-borderless">
         <tr>
             <th scope="col">Car Plate</th>
@@ -37,8 +38,13 @@
                 <td>{{ booking.getStartTime()|date('Y-m-d H:i') }}</td>
 {#                <td>{{ booking.getStartTime()|date('Y-m-d H:i') }}</td>#}
                 <td>{{ booking.getDuration().format('%H : %I') }}</td>
+                {% if booking.getPlugId() == NULL %}
+                    <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('available_plugs', {'booking_id':booking.getId()} )}}">Select Plug</a></td>
+                    <td></td>
+                {% else %}
                 <td>{{ booking.getPlugId().getType() }}</td>
                 <td>{{ booking.getPlugId().getStationId().getName() }}</td>
+                {% endif %}
 {#                <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('station_view', {'id':station.getId()} )}}">Details</a></td>#}
                 <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('booking_delete', {'car_id':booking.getCar().getId()} )}}">Delete</a></td>
             </tr>
@@ -48,5 +54,9 @@
 <br>
 {#<center><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="/new-station">Add Station</a></center>#}
 <br><br>
+{% else %}
+    <br><br><h1><center>Bookings Unavailable</center></h1>
+    <p><center  style="color:red">Login in order to see your bookings</center></p><br>
+{% endif %}
 </body>
 </html>

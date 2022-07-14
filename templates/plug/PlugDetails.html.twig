@@ -28,7 +28,12 @@
         {{ form_row(PlugForm.type) }}
         {{ form_row(PlugForm.status) }}
 
-        <br><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Update</button>
+
+        {% if app.user %}
+            <br><button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Update</button>
+        {% else %}
+            <p><center style="color:red">Cannot update Plug</center></p><br>
+        {% endif %}
         {{ form_end(PlugForm) }}
     </div>
 </div>
