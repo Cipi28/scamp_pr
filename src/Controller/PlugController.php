@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Plug;
 use App\Entity\Station;
+use App\Entity\UserCar;
 use App\Form\StationForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -116,6 +118,15 @@ class PlugController extends AbstractController
             throw $this->createNotFoundException(
                 'No product found for id '.$id
             );
+        }
+
+
+        $bookings = $entityManager->getRepository(Booking::class)->findAll();
+        foreach ($bookings as $booking){
+            if($booking->getPlugId() != NULL && $booking->getPlugId() == $product) {
+                $booking->setPlugId(NULL);
+                $entityManager->flush();
+            }
         }
 
 

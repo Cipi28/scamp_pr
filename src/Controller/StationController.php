@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Plug;
 use App\Form\RegistrationFormType;
 use App\Form\StationForm;
@@ -143,7 +144,15 @@ class StationController extends AbstractController
         $product = $entityManager->getRepository(Station::class)->find($id);
 
         $productPlug = $entityManager->getRepository(Plug::class)->findByStationId($id);
+        $bookings = $entityManager->getRepository(Booking::class)->findAll();
         foreach ($productPlug as $plug){
+
+            foreach ($bookings as $booking){
+                if($booking->getPlugId() != NULL && $booking->getPlugId() == $plug) {
+                    $booking->setPlugId(NULL);
+                    $entityManager->flush();
+                }
+            }
             $entityManager->remove($plug);
         }
         $entityManager->flush();
