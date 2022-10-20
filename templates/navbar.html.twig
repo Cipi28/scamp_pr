@@ -48,16 +48,23 @@
                         <a class="nav-link ms-auto" href="\read-station">Stations</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav  ms-auto text-center">
+                <ul class="navbar-nav  ms-auto text-center nopadding">
 
                     {% if app.user %}
+                    {# {{dump(app.user)}} #}
+                    
                         <li>
-                            <b class="nav-link" >{{ app.user.userIdentifier }}</b>
+                            <b class="nav-link" >{{ app.user.name }} </b>
                         </li>
+                        {% if app.user.isAdmin %}
+                        <li>
+                            <div class="nav-link" >Admin </div>
+                        </li>
+                        {% endif %}
                     {% endif %}
                     <li>
 {#                        <a class="nav-link" href="#">LogOut</a>#}
-                        <a class="nav-link" href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
+                        <a class="nav-link align-text-bottom" href="/{{ app.user ? 'logout' : 'login' }}" @click="isOpen = false">
                             {{ app.user ? 'Logout' : 'Login' }}
                         </a>
                     </li>

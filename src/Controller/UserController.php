@@ -26,6 +26,7 @@ class UserController extends AbstractController
     #[Route(['/' ,'/user'], name: 'user')]
     public function stationDetails(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // dd($this->getUser());
         $cars[] = new Car();
         array_splice($cars, 0, 1);
 //        $cars = $entityManager->getRepository(Car::class)->findAll();

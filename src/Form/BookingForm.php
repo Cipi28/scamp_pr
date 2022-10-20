@@ -19,7 +19,14 @@ class BookingForm extends AbstractType
     {
         $builder
             ->add('startTime', DateTimeType::class,['years' =>range('2022', '2050')] )
-            ->add('duration', \Symfony\Component\Form\Extension\Core\Type\DateIntervalType::class)
+            ->add('duration', \Symfony\Component\Form\Extension\Core\Type\DateIntervalType::class, [
+                'with_years'  => false,
+                'with_months' => false,
+                'with_days'   => false,
+                'with_hours'  => true,
+                'with_minutes'  => true,
+
+            ])
         ;
     }
 

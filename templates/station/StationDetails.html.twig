@@ -21,10 +21,15 @@
 <body>
 <br><td><a class="btn btn-outline-secondary text-center rounded-pill" href="/read-station">Back</a></td>
 <H1><center >Stations Details</center></H1>
-{% if app.user %}
-<br>
-{% else %}
-    <p><center style="color:red">Login in order to manage the Station</center></p><br>
+
+    {% if app.user %}
+    {% if app.user.isAdmin %}
+    <br>
+    {% else %}
+    <p><center style="color:red">Only Administrators can make changes </center></p><br>
+    {% endif %}
+    {% else %}
+    <p><center style="color:red">Login in order to manage the Stations</center></p><br>
 {% endif %}
 
 <br><br>
@@ -45,7 +50,11 @@
         {{ form_row(StationForm.longitude) }}
 
         {% if app.user %}
+        {% if app.user.isAdmin %}
         <button type="submit" class="btn btn-outline-secondary text-center rounded-pill">Update</button>
+        {% else %}
+            <p><center style="color:red">Cannot update Station</center></p><br>
+        {% endif %}
         {% else %}
             <p><center style="color:red">Cannot update Station</center></p><br>
         {% endif %}
@@ -68,7 +77,11 @@
             <td>{% if plug.getStatus() == 1 %}<span class="dot" style="background: green"></span>{% else %}<span class="dot" style="background: red"></span>{% endif %}</td>
             <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('plugDetails_view', {'id':plug.getId()} )}}">Details</a></td>
             {% if app.user %}
+            {% if app.user.isAdmin %}
             <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('deletePlug_view', {'id':plug.getId()} )}}">Delete</a></td>
+            {% else %}
+                <td><a style="background: lightgray" class="border-0 btn btn-outline-light " >Delete</a></td>
+            {% endif %}
             {% else %}
                 <td><a style="background: lightgray" class="border-0 btn btn-outline-light " >Delete</a></td>
             {% endif %}
@@ -78,8 +91,10 @@
 </div>
 <br>
 {% if app.user %}
+{% if app.user.isAdmin %}
     <center><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="{{ path('plug_view', {'station_id':station.getId()} )}}">Add Plug</a></center>
 
+{% endif %}
 {% endif %}
 <br><br></body>
 </html>

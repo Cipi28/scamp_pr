@@ -92,7 +92,7 @@ class BookingController extends AbstractController
             $EndTime = $booking->getStartTime();
             $EndTime->add($booking->getDuration());
             if($booking->getId() != $specificBooking->getId()) {
-                if (($EndTime >= $specificStartTime && $EndTime >= $specificEndTime) || ($StartTime >= $specificStartTime && $StartTime >= $specificEndTime)) {
+                if (($EndTime >= $specificStartTime && $EndTime <= $specificEndTime) || ($StartTime >= $specificStartTime && $StartTime <= $specificEndTime) || ($StartTime <= $specificStartTime && $EndTime >= $specificEndTime) || ($StartTime >= $specificStartTime && $EndTime <= $specificEndTime)) {
                     if ($booking->getPlugId() != NULL) {
                         for ($i = 0; $i < count($availablePlugs); $i++) {
                             if ( $availablePlugs[$i]->getId() == $booking->getPlugId()->getId()) {

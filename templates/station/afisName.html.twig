@@ -17,7 +17,11 @@
 <body>
 <br><br><H1 ><center>Stations Manager</center></H1>
 {% if app.user %}
+{% if app.user.isAdmin %}
 <br>
+{% else %}
+<p ><center style="color:red">Only Administrators can make changes</center></p><br>
+{% endif %}
 {% else %}
     <p ><center style="color:red">Login in order to manage Stations</center></p><br>
 {% endif %}
@@ -39,7 +43,11 @@
             <td>{{ station.getLocation() }}</td>
             <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('station_view', {'id':station.getId()} )}}">Details</a></td>
             {% if app.user %}
+            {% if app.user.isAdmin %}
             <td><a style="background: lightblue" class="border-0 btn btn-outline-light " href="{{ path('delete_view', {'id':station.getId()} )}}">Delete</a></td>
+            {% else %}
+                <td><a style="background: lightgray" class="border-0 btn btn-outline-light " >Delete</a></td>
+            {% endif %}
             {% else %}
                 <td><a style="background: lightgray" class="border-0 btn btn-outline-light " >Delete</a></td>
             {% endif %}
@@ -49,7 +57,9 @@
 </div>
 <br>
 {% if app.user %}
+{% if app.user.isAdmin %}
 <center><a style="background: lightblue" class="border-0 btn btn-outline-light rounded-pill" href="/new-station">Add Station</a></center>
+{% endif %}
 {% endif %}
 <br><br>
 </body>

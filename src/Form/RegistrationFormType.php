@@ -20,7 +20,7 @@ class RegistrationFormType extends AbstractType
             ->add('name')
             ->add('email')
             ->add('username')
-            ->add('agreeTerms', CheckboxType::class, [
+            ->add('isAdmin', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
