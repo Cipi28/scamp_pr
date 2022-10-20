@@ -36,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Car::class, mappedBy: 'user_id')]
     private $cars;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isAdmin;
+
 //    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CarUser::class, orphanRemoval: true)]
 //    private $car;
 
@@ -149,4 +152,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //    {
 //        return $this->car;
 //    }
+
+public function isAdmin(): ?bool
+{
+    return $this->isAdmin;
+}
+
+public function setIsAdmin(bool $isAdmin): self
+{
+    $this->isAdmin = $isAdmin;
+
+    return $this;
+}
 }

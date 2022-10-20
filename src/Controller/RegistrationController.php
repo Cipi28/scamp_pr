@@ -19,6 +19,7 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
+        // dd($form);
         $form->handleRequest($request);
 
 
@@ -28,6 +29,7 @@ class RegistrationController extends AbstractController
             $user->setName($form->get('name')->getData());
             $user->setEmail($form->get('email')->getData());
             $user->setUsername($form->get('username')->getData());
+            $user->setIsAdmin($form->get('isAdmin')->getData());
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
